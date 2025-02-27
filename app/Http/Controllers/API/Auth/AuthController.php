@@ -23,17 +23,16 @@ class AuthController extends Controller
         return $this->sendApiResponse($user, 'User register successfully.');
     }
    
-    // public function login(Request $request): JsonResponse
-    // {
-    //     if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
-    //         $user = Auth::user(); 
-    //         $success['token'] =  $user->createToken('MyApp')->plainTextToken; 
-    //         $success['name'] =  $user->name;
+    public function login(Request $request): JsonResponse
+    {
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+            $user = Auth::user(); 
+            $response['user'] = $user;
+            $response['token'] =  $user->createToken('token')->plainTextToken; 
    
-    //         return $this->sendApiResponse($success, 'User login successfully.');
-    //     } 
-    //     else{ 
-    //         return $this->sendApiError('Unauthorised.', ['error'=>'Unauthorised']);
-    //     } 
-    // }
+            return $this->sendApiResponse($response, 'User login successfully.');
+        }else { 
+            return $this->sendApiError('Unauthorised', ['error'=>'Unauthorised']);
+        } 
+    }
 }
