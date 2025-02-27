@@ -2,30 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+
 abstract class Controller
 {
-        /**
-     * success response method.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function sendApiResponse($result, $message)
+    public function sendApiResponse($result, $message): JsonResponse
     {
         $response = [
             'success' => true,
-            'data'    => $result,
             'message' => $message,
+            'data'    => $result,
         ];
   
         return response()->json($response, 200);
     }
   
-    /**
-     * return error response.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function sendApiError($error, $errorMessages = [], $code = 404)
+    public function sendApiError($error, $errorMessages = [], $code = 404): JsonResponse
     {
         $response = [
             'success' => false,
