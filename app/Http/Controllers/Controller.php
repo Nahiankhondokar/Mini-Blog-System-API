@@ -9,7 +9,7 @@ abstract class Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($result, $message)
+    public function sendApiResponse($result, $message)
     {
         $response = [
             'success' => true,
@@ -25,7 +25,7 @@ abstract class Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendError($error, $errorMessages = [], $code = 404)
+    public function sendApiError($error, $errorMessages = [], $code = 404)
     {
         $response = [
             'success' => false,
