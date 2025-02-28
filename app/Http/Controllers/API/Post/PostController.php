@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $posts = Post::orderByDesc('id')->get();
         return $this->sendApiResponse(PostListResource::collection($posts), 'Post list show');
@@ -29,9 +29,13 @@ class PostController extends Controller
         return $this->sendApiResponse($post->load('categories'), 'Post store successfully');
     }
 
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
         $post = Post::find($id);
+        if(!$post){
+            return $this->sendApiError('Not found!');
+        }
+
         return $this->sendApiResponse($post, 'Single post details');
     }
 
@@ -42,6 +46,12 @@ class PostController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        $post = Post::find($id);
+        if(!$post){
+            return $this->sendApiError('Not found!');
+        }
+        $post->delete();
+
+        return $this->sendApiResponse($post, 'Post deleted successfull');
     }
 }
