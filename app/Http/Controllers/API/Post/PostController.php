@@ -14,6 +14,8 @@ class PostController extends Controller
     public function index(): JsonResponse
     {
         $posts = Post::orderByDesc('id')->get();
+        $posts->load('categories', 'comments');
+
         return $this->sendApiResponse(PostListResource::collection($posts), 'Post list show');
     }
 
@@ -36,7 +38,7 @@ class PostController extends Controller
             return $this->sendApiError('Not found!');
         }
 
-        return $this->sendApiResponse($post, 'Single post details');
+        return $this->sendApiResponse(PostListResource::make($post), 'Single post details');
     }
 
     public function update(Request $request, string $id): JsonResponse

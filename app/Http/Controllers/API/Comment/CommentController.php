@@ -14,7 +14,8 @@ class CommentController extends Controller
     {
         $comment = Comment::create([
             'comment'   => $request->comment,
-            'user_id'   => auth()->user()->id
+            'user_id'   => auth()->user()->id,
+            'post_id'   => $request->post_id
         ]);
 
         return $this->sendApiResponse($comment, 'Comment store successfully');
