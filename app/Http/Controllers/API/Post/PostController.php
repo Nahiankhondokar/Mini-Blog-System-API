@@ -39,19 +39,28 @@ class PostController extends Controller
         return $this->sendApiResponse($post, 'Single post details');
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
-        //
+        $post               = Post::find($id);
+        $post->title        = $request->title;
+        $post->desciption   = $request->desciption;
+        $post->save();
+
+        $post->categories()->sync($request->categories);
+
+        return $this->sendApiResponse($post, 'Post updated');
     }
 
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         $post = Post::find($id);
         if(!$post){
             return $this->sendApiError('Not found!');
         }
+        $post->load('categories');
+        $post->categories()->detach($post->categories);
         $post->delete();
 
-        return $this->sendApiResponse($post, 'Post deleted successfull');
+        return $this->sendApiResponse('', 'Post deleted successfull');
     }
 }
