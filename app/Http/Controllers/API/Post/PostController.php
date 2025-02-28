@@ -24,7 +24,7 @@ class PostController extends Controller
             'desciption'          => $request->desciption
         ]);
 
-        $post->categories()->attach([4,5,7]);
+        $post->categories()->attach($request->categories);
 
         return $this->sendApiResponse($post->load('categories'), 'Post store successfully');
     }
