@@ -31,7 +31,8 @@ class PostController extends Controller
 
     public function show(string $id)
     {
-        //
+        $post = Post::find($id);
+        return $this->sendApiResponse($post, 'Single post details');
     }
 
     public function update(Request $request, string $id)
