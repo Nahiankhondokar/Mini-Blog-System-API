@@ -21,14 +21,26 @@ class PostController extends Controller
 
     public function store(PostStoreRequest $request): JsonResponse
     {
-        $post = Post::create([
-            'title'         => $request->title,
-            'desciption'          => $request->desciption
-        ]);
+        try {
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $fileName = md5(rand().time()).'.'.$file->extension();
+                $pathWithFile = $file->storePubliclyAs('post', $fileName, 'public');
+            }
+            
+            $post = Post::create([
+                'title'         => $request->title,
+                'desciption'    => $request->desciption,
+                'image'         => $pathWithFile
+            ]);
 
-        $post->categories()->attach($request->categories);
+            $post->categories()->attach($request->categories);
+            $post->load('categories');
 
-        return $this->sendApiResponse($post->load('categories'), 'Post store successfully');
+            return $this->sendApiResponse($post, 'Post store successfully');
+        } catch (\Exception $err) {
+            return $this->sendApiError($err->getMessage());
+        }
     }
 
     public function show(string $id): JsonResponse
