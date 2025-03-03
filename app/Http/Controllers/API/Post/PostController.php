@@ -8,6 +8,7 @@ use App\Http\Resources\PostListResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -53,16 +54,34 @@ class PostController extends Controller
         return $this->sendApiResponse(PostListResource::make($post), 'Single post details');
     }
 
-    public function update(Request $request, string $id): JsonResponse
+    public function update(PostStoreRequest $request, string $id): JsonResponse
     {
-        $post               = Post::find($id);
-        $post->title        = $request->title;
-        $post->desciption   = $request->desciption;
-        $post->save();
+        try {
+            $post = Post::find($id);
 
-        $post->categories()->sync($request->categories);
+            if($request->hasFile('image')){
+                Storage::disk('public')->delete($post->image);
 
-        return $this->sendApiResponse($post, 'Post updated');
+                $file = $request->file('image');
+                $fileName = md5(rand().time()).'.'.$file->extension();
+                $pathWithFile = $file->storePubliclyAs('post', $fileName, 'public');
+                
+            }else {
+                $pathWithFile = $post->image;
+            }
+
+            $post               = Post::find($id);
+            $post->title        = $request->title;
+            $post->desciption   = $request->desciption;
+            $post->image        = $pathWithFile;
+            $post->save();
+
+            $post->categories()->sync($request->categories);
+
+            return $this->sendApiResponse($post, 'Post updated');
+        } catch (\Exception $err) {
+            return $this->sendApiError($err->getMessage());
+        }
     }
 
     public function destroy(string $id): JsonResponse
