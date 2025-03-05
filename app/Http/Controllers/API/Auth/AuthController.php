@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function me(): JsonResponse
+    {
+        $user = Auth::user();
+        return $this->sendApiResponse($user, 'Loggedin user');
+    }
+    
     public function register(UserRegisterRequest $request): JsonResponse
     {
         $user = User::create([
@@ -34,5 +40,11 @@ class AuthController extends Controller
         }else { 
             return $this->sendApiError('Unauthorised', ['error'=>'Unauthorised']);
         } 
+    }
+
+    public function logout(): JsonResponse
+    {
+        auth()->user()->tokens()->delete();
+        return $this->sendApiResponse('', 'User logout');
     }
 }

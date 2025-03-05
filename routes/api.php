@@ -12,9 +12,12 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('public-post-list', [PostController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function(){
+    Route::get('me', [AuthController::class, 'me']);
     Route::apiResource('post', PostController::class);
     Route::get('comments', [CommentController::class, 'index']);
     Route::post('comment-store', [CommentController::class, 'store']);
+
+    Route::get('logout', [AuthController::class, 'logout']);
 });
 
 
