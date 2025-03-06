@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('comments', [CommentController::class, 'index']);
     Route::post('comment-store', [CommentController::class, 'store']);
 
+    Route::get('categories', [PostController::class, 'categoryList']);
     Route::get('logout', [AuthController::class, 'logout']);
 });
 

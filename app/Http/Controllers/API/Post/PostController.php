@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Resources\PostListResource;
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -95,5 +96,11 @@ class PostController extends Controller
         $post->delete();
 
         return $this->sendApiResponse('', 'Post deleted successfull');
+    }
+
+    public function categoryList(): JsonResponse
+    {
+        $categories = Category::all();
+        return $this->sendApiResponse($categories, 'Category list');
     }
 }
