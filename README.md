@@ -8,7 +8,7 @@
 * php artisan serve
 
 ## Project Description
-This project is a simple **Mini Blog System Application** where we login, create new blog & comments on the blog, etc. The features are given below,
+This project is a simple **Mini Blog System Application** where we can login, create new blog & comments on the blog, etc. The features are given below,
 * User Registration
 * User Login/Logout
 * Blog CRUD
