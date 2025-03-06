@@ -15,3 +15,6 @@ This project is a simple **Mini Blog System Application** where we login, create
 * Dummy Category List by Seeding
 * Comment on a blog
 * Relationships with post, category, user
+
+### Note
+I tried to build APIs for communicate with frontend for mini blog project. We can add many features to this application to make it more user-friendly and enhance the user experience. 
