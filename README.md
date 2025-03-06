@@ -12,6 +12,6 @@ This project is a simple **Mini Blog System Application** where we login, create
 * User Registration
 * User Login/Logout
 * Blog CRUD
-* Dummy Category List
+* Dummy Category List by Seeding
 * Comment on a blog
 * Relationships with post, category, user
