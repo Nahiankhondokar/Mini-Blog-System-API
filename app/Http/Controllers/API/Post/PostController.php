@@ -51,7 +51,8 @@ class PostController extends Controller
         if(!$post){
             return $this->sendApiError('Not found!');
         }
-
+        $post->load('comments');
+        
         return $this->sendApiResponse(PostListResource::make($post), 'Single post details');
     }
 
