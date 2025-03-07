@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -33,7 +34,7 @@ class PostController extends Controller
             $post = Post::create([
                 'title'         => $request->title,
                 'desciption'    => $request->desciption,
-                'image'         => $pathWithFile
+                'image'         => $pathWithFile ?? null
             ]);
 
             $post->categories()->attach($request->categories);
@@ -52,7 +53,7 @@ class PostController extends Controller
             return $this->sendApiError('Not found!');
         }
         $post->load('comments');
-        
+
         return $this->sendApiResponse(PostListResource::make($post), 'Single post details');
     }
 
@@ -60,9 +61,9 @@ class PostController extends Controller
     {
         try {
             $post = Post::find($id);
-
+          
             if($request->hasFile('image')){
-                Storage::disk('public')->delete($post->image);
+                $post->image !== null ?? Storage::disk('public')->delete($post->image);
 
                 $file = $request->file('image');
                 $fileName = md5(rand().time()).'.'.$file->extension();
